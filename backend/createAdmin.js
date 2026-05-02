@@ -5,7 +5,7 @@ const Admin = db.Admin;
 async function createAdmin() {
   await Admin.create({
     email: "admin@gmail.com",
-    password: "Strong@12345", // plain password
+    password: "Strong@12345", 
     role: "admin"
   });
 
