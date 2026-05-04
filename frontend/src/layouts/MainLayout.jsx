@@ -14,8 +14,10 @@ function MainLayout() {
 
         <div className="main-content">
 
-          <Dashboard />
+          <h1>Dashboard</h1>
+        <p>This is dashboard content</p>
         </div>
+        
       </div>
     </>
   );

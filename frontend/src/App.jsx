@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import Categories from "./pages/Categories";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/MainLayout" element={<MainLayout />}/> 
         <Route path="/dashboard" element={<Dashboard />} />
-        
+        <Route path="/categories" element={<Categories />} /> 
         <Route path="/products" element={<Products />} />
 
 
