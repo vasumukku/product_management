@@ -1,0 +1,15 @@
+//home
+//landing
+//plp
+//pdp-->sku,cart,checkout page ,order confirmation page 
+//filters--
+//particular page pdp
+//contact details
+//placed order--id,confimation mail
+
+//cold user --guestflow
+//real user --logins cred,checkking middleware , tracing all detils and sending proper info throungh notification
+//device location --pincode ,enable camera acces 3d animation
+//pim --pdetails,description,sku --(bulk of details)
+
+/sku --infoo

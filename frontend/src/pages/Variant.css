@@ -1,0 +1,67 @@
+.main-content {
+  margin-top: 60px;
+  margin-left: 320px;
+  padding: 20px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+/* Form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-grid input {
+  padding: 10px;
+}
+
+/* Attributes */
+.attribute-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.attr {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.attr.active {
+  background: teal;
+  color: white;
+}
+
+/* Selected */
+.selected-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: #eef2ff;
+}
+
+/* Button */
+.submit-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: teal;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

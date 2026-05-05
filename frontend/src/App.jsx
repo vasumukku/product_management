@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Categories from "./pages/Categories";
+import CreateVariant from "./pages/CreateVariant";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/categories" element={<Categories />} /> 
         <Route path="/products" element={<Products />} />
+        <Route path="/variants/:productId" element={<CreateVariant />} />
 
 
       </Routes>
