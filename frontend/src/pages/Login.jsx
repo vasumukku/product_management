@@ -59,7 +59,7 @@ function Login() {
 </div>
 
         {/* Card */}
-        <div className="card">
+        <div className="login-card">
           <label>Email</label>
           <input
             type="email"

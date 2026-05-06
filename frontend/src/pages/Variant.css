@@ -1,67 +1,65 @@
-.main-content {
+.variant-container {
   margin-top: 60px;
   margin-left: 320px;
   padding: 20px;
-  background: #f9fafb;
-  min-height: 100vh;
 }
 
-/* Form grid */
-.form-grid {
+/* INPUT BOXES */
+.form-box {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.form-grid input {
-  padding: 10px;
-}
-
-/* Attributes */
-.attribute-box {
-  display: flex;
-  flex-wrap: wrap;
   gap: 10px;
 }
 
-.attr {
-  padding: 8px 12px;
+input {
+  padding: 10px;
   border: 1px solid #ccc;
-  background: white;
+}
+
+/* ATTRIBUTES */
+.attr-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* SIMPLE BOX */
+.box {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
   cursor: pointer;
-  border-radius: 20px;
+  background: white;
 }
 
-.attr.active {
-  background: teal;
-  color: white;
+/* SELECTED BOX */
+.box.active {
+  border: 2px solid black;
 }
 
-/* Selected */
+/* SELECTED TEXT BOX */
 .selected-box {
   margin-top: 10px;
   padding: 10px;
-  background: #eef2ff;
+  border: 1px solid #ccc;
 }
 
-/* Button */
-.submit-btn {
+/* BUTTON */
+.btn {
   margin-top: 20px;
-  padding: 10px 20px;
-  background: teal;
+  padding: 10px;
+  background: black;
   color: white;
   border: none;
-  cursor: pointer;
 }
 
-/* Responsive */
+/* MOBILE */
 @media (max-width: 768px) {
-  .main-content {
+  .variant-container {
     margin-left: 0;
   }
 
-  .form-grid {
+  .form-box {
     grid-template-columns: 1fr;
   }
 }

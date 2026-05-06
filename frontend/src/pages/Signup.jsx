@@ -59,7 +59,7 @@ function Signup() {
         </div>
 
         {/* CARD */}
-        <div className="card">
+        <div className="login-card">
           <label>Name</label>
           <input
             type="text"

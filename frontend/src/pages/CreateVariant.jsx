@@ -8,21 +8,20 @@ function CreateVariant() {
   const { productId } = useParams();
   const navigate = useNavigate();
 
-  const [sku, setSku] = useState("");
-  const [price, setPrice] = useState("");
-  const [discount, setDiscount] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [form, setForm] = useState({
+    sku: "",
+    price: "",
+    discount: "",
+    quantity: "",
+  });
 
   const [selectedAttributes, setSelectedAttributes] = useState([]);
 
-  const attributes = [
-    "Color",
-    "Storage",
-    "Material",
-    "Size",
-    "RAM",
-    "Processor",
-  ];
+  const attributes = ["Color", "Size", "RAM", "Storage", "Material"];
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const toggleAttribute = (attr) => {
     if (selectedAttributes.includes(attr)) {
@@ -35,18 +34,12 @@ function CreateVariant() {
   const handleSubmit = () => {
     const data = {
       productId,
-      sku,
-      price,
-      discount,
-      quantity,
+      ...form,
       attributes: selectedAttributes,
     };
 
-    console.log("Variant Data:", data);
-
-    // Later API call here
-
-    navigate(-1); // go back
+    console.log(data);
+    navigate(-1);
   };
 
   return (
@@ -56,63 +49,43 @@ function CreateVariant() {
       <div className="layout">
         <Sidebar />
 
-        <div className="main-content">
+        <div className="variant-container">
           <h2>Create Variant</h2>
 
-          <div className="form-grid">
-            <input
-              placeholder="SKU Code"
-              value={sku}
-              onChange={(e) => setSku(e.target.value)}
-            />
-
-            <input
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-
-            <input
-              placeholder="Discount"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
-            />
-
-            <input
-              placeholder="Quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
+          {/* INPUT BOXES */}
+          <div className="form-box">
+            <input name="sku" placeholder="SKU" onChange={handleChange} />
+            <input name="price" placeholder="Price" onChange={handleChange} />
+            <input name="discount" placeholder="Discount" onChange={handleChange} />
+            <input name="quantity" placeholder="Quantity" onChange={handleChange} />
           </div>
 
-          <h3>Attribute Selection</h3>
+          {/* ATTRIBUTES */}
+          <h3>Attributes</h3>
 
-          <div className="attribute-box">
+          <div className="attr-box">
             {attributes.map((attr) => (
-              <button
+              <div
                 key={attr}
-                className={
-                  selectedAttributes.includes(attr)
-                    ? "attr active"
-                    : "attr"
-                }
+                className={`box ${selectedAttributes.includes(attr) ? "active" : ""}`}
                 onClick={() => toggleAttribute(attr)}
               >
                 {attr}
-              </button>
+              </div>
             ))}
           </div>
 
-          <h3>Selected Attributes</h3>
-
+          {/* SELECTED */}
+          <h3>Selected</h3>
           <div className="selected-box">
             {selectedAttributes.length === 0
-              ? "No values"
+              ? "No selection"
               : selectedAttributes.join(", ")}
           </div>
 
-          <button className="submit-btn" onClick={handleSubmit}>
-            Create Variant
+          {/* BUTTON */}
+          <button className="btn" onClick={handleSubmit}>
+            Create
           </button>
         </div>
       </div>

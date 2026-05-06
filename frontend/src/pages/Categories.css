@@ -1,13 +1,13 @@
-/* MAIN CONTENT (fix for navbar + sidebar) */
+
 .main-content {
-  margin-top: 60px;     /* navbar height */
-  margin-left: 320px;   /* sidebar width */
+  margin-top: 60px;    
+  margin-left: 300px;   
   padding: 20px;
   min-height: 80vh;
   background: #f9fafb;
 }
 
-/* Header */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -24,7 +24,7 @@
   cursor: pointer;
 }
 
-/* Cards */
+
 .card {
   display: flex;
   justify-content: space-between;
@@ -46,14 +46,14 @@
   color: gray;
 }
 
-/* Actions */
+
 .actions button {
   margin-left: 10px;
   padding: 6px 12px;
   cursor: pointer;
 }
 
-/* Modal */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -85,7 +85,6 @@
   justify-content: space-between;
 }
 
-/* TABLET */
 @media (max-width: 1024px) {
   .main-content {
     margin-left: 180px;
@@ -100,7 +99,7 @@
   }
 }
 
-/* MOBILE */
+
 @media (max-width: 768px) {
 
   .sidebar {

@@ -24,7 +24,7 @@ exports.createVariant = async (req, res) => {
 
 exports.getVariantsByProduct = async (req, res) => {
   try {
-    const productId = req.params.productId;
+    const productId = req.params.id;
 
     const variants = await Variant.findAll({
       where: { productId },
