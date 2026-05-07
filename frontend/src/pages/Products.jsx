@@ -5,21 +5,31 @@ import Navbar from "../components/Navbar";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
 
-
+const PRODUCT_API = "http://localhost:5000/api/products";
 const CATEGORY_API = "http://localhost:5000/api/categories";
 
 function Products() {
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
 
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
 
- 
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(`${PRODUCT_API}/all`);
+      setProducts(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const res = await axios.get(CATEGORY_API);
@@ -30,30 +40,31 @@ function Products() {
   };
 
   useEffect(() => {
+    fetchProducts();
     fetchCategories();
   }, []);
 
 
-  const handleAdd = () => {
-    if (!name || !categoryId) return;
+  const handleAdd = async () => {
+    try {
+      const body = {
+        title,
+        description,
+        categoryId,
+      };
 
-    const selectedCategory = categories.find(
-      (c) => c.id === Number(categoryId)
-    );
+      await axios.post(`${PRODUCT_API}/create`, body);
 
-    const newProduct = {
-      id: Date.now(),
-      name,
-      categoryName: selectedCategory?.name,
-      description,
-    };
+      fetchProducts();
 
-    setProducts([...products, newProduct]);
+      setTitle("");
+      setDescription("");
+      setCategoryId("");
 
-    setName("");
-    setCategoryId("");
-    setDescription("");
-    setShowModal(false);
+      setShowModal(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -63,46 +74,119 @@ function Products() {
       <div className="layout">
         <Sidebar />
 
-        <div className="main-content">
-          {/* Header */}
-          <div className="header">
-            <h2>Products</h2>
+        <div className="products-main-content">
 
-            <button className="add-btn" onClick={() => setShowModal(true)}>
-              Add Product
-            </button>
-          </div>
+  {/* HEADER */}
+  <div className="products-header">
+    <h2>Products</h2>
 
-          {/* Product Cards */}
-          {products.map((p) => (
-            <div className="card" key={p.id}>
-              <div>
-                <h3>{p.name}</h3>
-                <p> <b>Category:</b> {p.categoryName}</p>
-                <p> <b>Brand:</b> {p.description}</p>
-                <button onClick={() => navigate(`/variants/${p.id}`)}>
-                Add Variant
-                  </button>
-              </div>
-            </div>
-          ))}
+    <button
+      className="products-add-btn"
+      onClick={() => setShowModal(true)}
+    >
+      Add Product
+    </button>
+  </div>
+
+  {/* PRODUCT GRID */}
+  <div className="products-grid">
+
+    {products.map((p) => (
+      <div className="product-card" key={p.id}>
+
+        {/* TOP */}
+        <div className="product-top">
+
+          <h3 className="product-title">
+            {p.title}
+          </h3>
+
+          <span className="product-status">
+            Active
+          </span>
+
         </div>
+
+        {/* DETAILS */}
+        <div className="product-details">
+
+          <p>
+            <b>Description:</b> {p.description}
+          </p>
+
+          <p>
+            <b>Category Id:</b> {p.categoryId}
+          </p>
+
+           <p>
+    <b>Variants:</b>
+
+    {p.variants && p.variants.length > 0 ? (
+      <span className="variant-count">
+        {p.variants.length} Available
+      </span>
+    ) : (
+      <span className="no-variant">
+        No Variants Added
+      </span>
+    )}
+  </p>
+
+        </div>
+
+        {/* BUTTONS */}
+        <div className="product-buttons">
+
+          <button
+            className="create-variant-btn"
+            onClick={() => navigate(`/variants/${p.id}`)}
+          >
+            Create Variant
+          </button>
+
+          {/* <button
+            className="view-variant-btn"
+            onClick={() => navigate(`/view-variants/${p.id}`)}
+          >
+            View Variants
+          </button> */}
+
+          <button
+            className="view-variant-btn"
+            onClick={() => {
+
+            if (p.variants.length === 0) {
+              alert("No Variants Available");
+              return;
+            }
+
+            navigate(`/view-variants/${p.id}`);
+            }}>View Variants</button>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+</div>
       </div>
 
-      {/* Modal */}
+      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
+
           <div className="modal">
+
             <h3>Add Product</h3>
 
             <input
               type="text"
-              placeholder="Product Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Product Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
 
-           
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
@@ -123,9 +207,17 @@ function Products() {
             />
 
             <div className="modal-actions">
-              <button onClick={handleAdd}>Save</button>
-              <button onClick={() => setShowModal(false)}>Cancel</button>
+
+              <button onClick={handleAdd}>
+                Save
+              </button>
+
+              <button onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+
             </div>
+
           </div>
         </div>
       )}

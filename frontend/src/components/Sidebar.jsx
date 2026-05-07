@@ -11,7 +11,7 @@ function Sidebar() {
         <li onClick={() => navigate("/MainLayout")}>Dashboard</li>
         <li onClick={() => navigate("/categories")}>Categories</li>
         <li onClick={() => navigate("/products")}>Products</li>
-        <li onClick={() => navigate("/settings")}>Settings</li>
+        {/* <li onClick={() => navigate("/settings")}>Settings</li> */}
       </ul>
 
       <div className="logout" onClick={() => navigate("/")}>

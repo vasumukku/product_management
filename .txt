@@ -12,4 +12,4 @@
 //device location --pincode ,enable camera acces 3d animation
 //pim --pdetails,description,sku --(bulk of details)
 
-/sku --infoo
+/sku --infoo 

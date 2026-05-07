@@ -1,103 +1,223 @@
-.main-content {
+
+.products-main-content {
   margin-top: 60px;
-  margin-left: 220px;
+  margin-left: 320px;
   padding: 20px;
-  background: #f9fafb;
+  background: #f3f4f6;
   min-height: 100vh;
 }
 
-/* Header */
-.header {
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 600px;
+}
+
+.products-header h2 {
+  font-size: 28px;
+  color: #111827;
+}
+
+
+.products-add-btn {
+  background: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.products-add-btn:hover {
+  background: #0284c7;
+}
+
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  transition: 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+.product-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.add-btn {
-  background: #0ea5e9;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.product-title {
+  font-size: 24px;
+  color: #111827;
+  margin: 0;
 }
 
-/* Card */
-.card {
-  background: white;
-  padding: 15px;
+
+.product-status {
+  background: #dcfce7;
+  color: green;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+
+.product-details {
   margin-top: 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+}
 
-  /* ✨ smooth effect */
-  transition: all 0.3s ease;
+.product-details p {
+  margin-top: 8px;
+  color: #4b5563;
+  font-size: 15px;
+}
+
+
+.product-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+
+.create-variant-btn {
+  flex: 1;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-/* ✨ hover effect */
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+.create-variant-btn:hover {
+  background: #1d4ed8;
 }
 
-/* Modal */
+
+.view-variant-btn {
+  flex: 1;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.view-variant-btn:hover {
+  background: #059669;
+}
+
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal {
+  width: 400px;
   background: white;
-  padding: 20px;
-  width: 300px;
-  border-radius: 8px;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  color: #111827;
 }
 
 .modal input,
 .modal select,
 .modal textarea {
   width: 100%;
-  margin-top: 10px;
-  padding: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+
+.modal textarea {
+  height: 100px;
+  resize: none;
 }
 
 .modal-actions {
-  margin-top: 15px;
   display: flex;
-  justify-content: space-between;
+  gap: 12px;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .main-content {
-    margin-left: 180px;
-  }
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* Mobile */
+.modal-actions button:first-child {
+  background: #2563eb;
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background: #ef4444;
+  color: white;
+}
+
+
 @media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-
-  .main-content {
+  .products-main-content {
     margin-left: 0;
+    padding: 15px;
   }
 
-  .header {
+  .products-header {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    align-items: flex-start;
   }
 
-  .add-btn {
+  .products-add-btn {
     width: 100%;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-buttons {
+    flex-direction: column;
+  }
+
+  .modal {
+    width: 90%;
   }
 }

@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Categories from "./pages/Categories";
 import CreateVariant from "./pages/CreateVariant";
+import ViewVariants from "./pages/ViewVariants"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/categories" element={<Categories />} /> 
         <Route path="/products" element={<Products />} />
         <Route path="/variants/:productId" element={<CreateVariant />} />
+        <Route path="/view-variants/:productId" element={<ViewVariants />}/> 
 
 
       </Routes>
