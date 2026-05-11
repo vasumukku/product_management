@@ -1,316 +1,677 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import React, {
+  useEffect,
+  useState
+} from "react";
+
+import {
+  useNavigate,
+  useParams
+} from "react-router-dom";
+
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+
 import "./Variant.css";
 
 function CreateVariant() {
 
-  const { productId } = useParams();
   const navigate = useNavigate();
 
+  const { productId } = useParams();
+
+
+
+  // BASIC FORM
   const [form, setForm] = useState({
+
     sku: "",
     price: "",
     discount: "",
     quantity: "",
 
-    color: "",
-    size: "",
-    ram: "",
-    storage: "",
-    material: "",
   });
 
-  // HANDLE INPUT
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+
+
+
+  // ATTRIBUTES
+  const [attributes,
+    setAttributes]
+  = useState([]);
+
+
+
+
+  // SELECTED ATTRIBUTES
+  const [selectedAttributes,
+    setSelectedAttributes]
+  = useState([]);
+
+
+
+
+  // POPUP
+  const [showPopup,
+    setShowPopup]
+  = useState(false);
+
+
+
+
+  // NEW ATTRIBUTE
+  const [attributeName,
+    setAttributeName]
+  = useState("");
+
+
+
+  // OPTION INPUT
+  const [optionInput,
+    setOptionInput]
+  = useState("");
+
+
+
+  // OPTIONS ARRAY
+  const [options,
+    setOptions]
+  = useState([]);
+
+
+
+
+  // FETCH ATTRIBUTES
+  useEffect(() => {
+
+    fetchAttributes();
+
+  }, []);
+
+
+
+
+  const fetchAttributes = async () => {
+
+    try {
+
+      const res = await fetch(
+        "http://localhost:5000/api/attributes"
+      );
+
+      const data = await res.json();
+
+      setAttributes(data);
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
   };
 
 
-  const handleSubmit = async () => {
 
-  try {
 
-    const data = {
-      sku: form.sku,
-      price: form.price,
-      discount: form.discount,
-      quantity: form.quantity,
+  // BASIC INPUT CHANGE
+  const handleChange = (e) => {
 
-      productId: productId,
+    setForm({
 
-      attributes: {
-        color: form.color,
-        size: form.size,
-        ram: form.ram,
-        storage: form.storage,
-        material: form.material,
-      },
-    };
+      ...form,
 
-    // API CALL
-    const res = await fetch(
-      "http://localhost:5000/api/variants/create",
+      [e.target.name]:
+        e.target.value,
+
+    });
+
+  };
+
+
+
+
+  // ADD ATTRIBUTE SELECT
+  const addAttribute = (attribute) => {
+
+    const exists =
+      selectedAttributes.find(
+        (item) =>
+          item.id === attribute.id
+      );
+
+    if (exists) return;
+
+
+
+    setSelectedAttributes([
+
+      ...selectedAttributes,
+
       {
-        method: "POST",
+        ...attribute,
+        selectedValue: "",
+      },
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+    ]);
 
-        body: JSON.stringify(data),
-      }
+  };
+
+
+
+
+  // ATTRIBUTE VALUE CHANGE
+  const handleAttributeValue =
+    (id, value) => {
+
+    const updated =
+      selectedAttributes.map(
+        (item) => {
+
+          if (item.id === id) {
+
+            return {
+
+              ...item,
+
+              selectedValue:
+                value,
+
+            };
+
+          }
+
+          return item;
+
+        }
+      );
+
+
+
+    setSelectedAttributes(
+      updated
     );
 
-    const result = await res.json();
+  };
 
-    console.log(result);
 
-    alert("Variant Created Successfully");
 
-    navigate(-1);
 
-  } catch (err) {
+  // ADD OPTION TEMP
+  const addOption = () => {
 
-    console.log(err);
+    if (!optionInput) return;
 
-    alert("Something Went Wrong");
 
-  }
-};
- 
-  
+
+    setOptions([
+
+      ...options,
+
+      optionInput,
+
+    ]);
+
+
+
+    setOptionInput("");
+
+  };
+
+
+
+
+  // CREATE ATTRIBUTE
+  const createAttribute =
+    async () => {
+
+    try {
+
+      const data = {
+
+        name: attributeName,
+
+        options: options,
+
+      };
+
+
+
+      await fetch(
+        "http://localhost:5000/api/attributes/create",
+        {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify(data),
+
+        }
+      );
+
+
+
+      fetchAttributes();
+
+
+
+      setShowPopup(false);
+
+      setAttributeName("");
+
+      setOptionInput("");
+
+      setOptions([]);
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+  };
+
+
+
+
+  // CREATE VARIANT
+  const handleSubmit = async () => {
+
+    try {
+
+      const dynamicAttributes =
+        {};
+
+
+
+      selectedAttributes.forEach(
+        (item) => {
+
+          dynamicAttributes[
+            item.name
+          ] =
+            item.selectedValue;
+
+        }
+      );
+
+
+
+      const data = {
+
+        sku: form.sku,
+
+        price: form.price,
+
+        discount: form.discount,
+
+        quantity: form.quantity,
+
+        productId: productId,
+
+        attributes:
+          dynamicAttributes,
+
+      };
+
+
+
+      await fetch(
+        "http://localhost:5000/api/variants/create",
+        {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify(data),
+
+        }
+      );
+
+
+
+      alert(
+        "Variant Created"
+      );
+
+
+
+      navigate(-1);
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+  };
+
+
+
 
   return (
+
     <>
       <Navbar />
+
+
 
       <div className="layout">
 
         <Sidebar />
 
-        <div className="variant-main-container">
+
+
+        <div className=
+          "variant-main-container"
+        >
 
           {/* HEADER */}
-          <div className="variant-header">
+          <div className=
+            "variant-header"
+          >
 
-            <h2>Create Variant</h2>
+            <h2>
+              Create Variant
+            </h2>
 
             <p>
-              Add product variant details
+              Manage Product Variant
             </p>
 
           </div>
 
-          {/* FORM CARD */}
-          <div className="variant-card">
+
+
+          {/* CARD */}
+          <div className=
+            "variant-card"
+          >
 
             {/* BASIC DETAILS */}
-            <h3 className="section-title">
-              Basic Details
-            </h3>
+            <div className=
+              "variant-grid"
+            >
 
-            <div className="variant-grid">
+              <div className=
+                "input-group"
+              >
 
-              <div className="input-group">
-                <label>SKU Code</label>
+                <label>
+                  SKU
+                </label>
 
                 <input
                   type="text"
                   name="sku"
-                  placeholder="Ex: IPHN-BLK-128"
                   value={form.sku}
-                  onChange={handleChange}
+                  placeholder="TH-RED-L"
+                  onChange={
+                    handleChange
+                  }
                 />
+
               </div>
 
-              <div className="input-group">
-                <label>Price</label>
+
+
+              <div className=
+                "input-group"
+              >
+
+                <label>
+                  Price
+                </label>
 
                 <input
                   type="number"
                   name="price"
-                  placeholder="Enter Price"
                   value={form.price}
-                  onChange={handleChange}
+                  placeholder="2999"
+                  onChange={
+                    handleChange
+                  }
                 />
+
               </div>
 
-              <div className="input-group">
-                <label>Discount %</label>
+
+
+              <div className=
+                "input-group"
+              >
+
+                <label>
+                  Discount
+                </label>
 
                 <input
                   type="number"
                   name="discount"
-                  placeholder="Enter Discount"
                   value={form.discount}
-                  onChange={handleChange}
+                  placeholder="10"
+                  onChange={
+                    handleChange
+                  }
                 />
+
               </div>
 
-              <div className="input-group">
-                <label>Quantity</label>
+
+
+              <div className=
+                "input-group"
+              >
+
+                <label>
+                  Quantity
+                </label>
 
                 <input
                   type="number"
                   name="quantity"
-                  placeholder="Enter Quantity"
                   value={form.quantity}
-                  onChange={handleChange}
+                  placeholder="10"
+                  onChange={
+                    handleChange
+                  }
                 />
+
               </div>
 
             </div>
 
-            {/* ATTRIBUTES */}
-            <h3 className="section-title">
-              Variant Attributes
-            </h3>
 
-            <div className="variant-grid">
 
-              <div className="input-group">
-                <label>Color</label>
+            {/* ATTRIBUTE SECTION */}
+            <div className=
+              "attribute-box"
+            >
 
-                <select
-                  name="color"
-                  value={form.color}
-                  onChange={handleChange}
+              <div className=
+                "attribute-top"
+              >
+
+                <h3>
+                  Attribute Selection
+                </h3>
+
+
+
+                <button
+                  className=
+                  "add-attribute-btn"
+
+                  onClick={() =>
+                    setShowPopup(
+                      true
+                    )
+                  }
                 >
-                  <option value="">Select Color</option>
 
-                  <option value="Black">Black</option>
-                  <option value="White">White</option>
-                  <option value="Blue">Blue</option>
-                  <option value="Red">Red</option>
-                </select>
+                  + Add Variant
+
+                </button>
+
               </div>
 
-              <div className="input-group">
-                <label>Size</label>
 
-                <select
-                  name="size"
-                  value={form.size}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Size</option>
 
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                </select>
-              </div>
+              {/* AVAILABLE ATTRIBUTES */}
+              <div className=
+                "attribute-wrapper"
+              >
 
-              <div className="input-group">
-                <label>RAM</label>
+                {attributes.map(
+                  (attribute) => (
 
-                <select
-                  name="ram"
-                  value={form.ram}
-                  onChange={handleChange}
-                >
-                  <option value="">Select RAM</option>
+                  <button
+                    key={attribute.id}
 
-                  <option value="4GB">4GB</option>
-                  <option value="6GB">6GB</option>
-                  <option value="8GB">8GB</option>
-                  <option value="12GB">12GB</option>
-                </select>
-              </div>
+                    className=
+                    "attribute-chip"
 
-              <div className="input-group">
-                <label>Storage</label>
+                    onClick={() =>
+                      addAttribute(
+                        attribute
+                      )
+                    }
+                  >
 
-                <select
-                  name="storage"
-                  value={form.storage}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Storage</option>
+                    {attribute.name}
 
-                  <option value="64GB">64GB</option>
-                  <option value="128GB">128GB</option>
-                  <option value="256GB">256GB</option>
-                  <option value="512GB">512GB</option>
-                </select>
-              </div>
+                  </button>
 
-              <div className="input-group">
-                <label>Material</label>
+                ))}
 
-                <select
-                  name="material"
-                  value={form.material}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Material</option>
-
-                  <option value="Cotton">Cotton</option>
-                  <option value="Leather">Leather</option>
-                  <option value="Plastic">Plastic</option>
-                  <option value="Metal">Metal</option>
-                </select>
               </div>
 
             </div>
 
-            {/* PREVIEW */}
-            <h3 className="section-title">
-              Variant Preview
-            </h3>
 
-            <div className="preview-box">
 
-              <p>
-                <b>SKU:</b> {form.sku || "-"}
-              </p>
+            {/* SELECTED ATTRIBUTES */}
+            <div className=
+              "attribute-values-box"
+            >
 
-              <p>
-                <b>Price:</b> ₹ {form.price || 0}
-              </p>
+              <h3>
+                Attribute Values
+              </h3>
 
-              <p>
-                <b>Discount:</b> {form.discount || 0}%
-              </p>
 
-              <p>
-                <b>Quantity:</b> {form.quantity || 0}
-              </p>
 
-              <p>
-                <b>Color:</b> {form.color || "-"}
-              </p>
+              {selectedAttributes.map(
+                (attribute) => (
 
-              <p>
-                <b>Size:</b> {form.size || "-"}
-              </p>
+                <div
+                  key={attribute.id}
 
-              <p>
-                <b>RAM:</b> {form.ram || "-"}
-              </p>
+                  className=
+                  "single-attribute"
+                >
 
-              <p>
-                <b>Storage:</b> {form.storage || "-"}
-              </p>
+                  <div className=
+                    "single-top"
+                  >
 
-              <p>
-                <b>Material:</b> {form.material || "-"}
-              </p>
+                    <h4>
+                      {
+                        attribute.name
+                      }
+                    </h4>
+
+
+
+                    {/* IF NO OPTIONS */}
+                    {attribute
+                      .AttributeOptions
+                      .length === 0 && (
+
+                      <button
+                        className=
+                        "small-add-btn"
+                      >
+
+                        + Add Option
+
+                      </button>
+
+                    )}
+
+                  </div>
+
+
+
+                  <select
+
+                    value={
+                      attribute.selectedValue
+                    }
+
+                    onChange={(e) =>
+                      handleAttributeValue(
+
+                        attribute.id,
+
+                        e.target.value
+                      )
+                    }
+                  >
+
+                    <option value="">
+                      Select
+                      {" "}
+                      {
+                        attribute.name
+                      }
+                    </option>
+
+
+
+                    {attribute
+                      .AttributeOptions
+                      .map((option) => (
+
+                      <option
+                        key={option.id}
+
+                        value={
+                          option.value
+                        }
+                      >
+
+                        {option.value}
+
+                      </option>
+
+                    ))}
+
+                  </select>
+
+                </div>
+
+              ))}
 
             </div>
+
+
 
             {/* BUTTON */}
             <button
               className="create-btn"
               onClick={handleSubmit}
             >
+
               Create Variant
+
             </button>
 
           </div>
@@ -318,6 +679,183 @@ function CreateVariant() {
         </div>
 
       </div>
+
+
+
+      {/* POPUP */}
+      {showPopup && (
+
+        <div className=
+          "popup-overlay"
+        >
+
+          <div className=
+            "popup-box"
+          >
+
+            <h3>
+              Add Variant
+            </h3>
+
+
+
+            <input
+              type="text"
+
+              placeholder=
+              "Attribute Name"
+
+              value={attributeName}
+
+              onChange={(e) =>
+                setAttributeName(
+                  e.target.value
+                )
+              }
+            />
+
+
+
+            <div className=
+              "option-row"
+            >
+
+              <input
+                type="text"
+
+                placeholder=
+                "Add Option"
+
+                value={optionInput}
+
+                onChange={(e) =>
+                  setOptionInput(
+                    e.target.value
+                  )
+                }
+              />
+
+
+
+              <button
+                className=
+                "small-add-btn"
+
+                onClick={addOption}
+              >
+
+                + Add
+
+              </button>
+
+            </div>
+
+
+
+            {/* OPTIONS */}
+            <div className=
+              "option-preview"
+            >
+
+              {options.map(
+                (item, index) => (
+
+                <span
+                  key={index}
+
+                  className=
+                  "option-tag"
+                >
+
+                  {item}
+
+                </span>
+
+              ))}
+
+            </div>
+
+
+
+            {/* EXISTING */}
+            <div className=
+              "existing-section"
+            >
+
+              <h4>
+                Existing Attributes
+              </h4>
+
+
+
+              <div className=
+                "attribute-wrapper"
+              >
+
+                {attributes.map(
+                  (item) => (
+
+                  <span
+                    key={item.id}
+
+                    className=
+                    "existing-chip"
+                  >
+
+                    {item.name}
+
+                  </span>
+
+                ))}
+
+              </div>
+
+            </div>
+
+
+
+            <div className=
+              "popup-actions"
+            >
+
+              <button
+                className=
+                "cancel-btn"
+
+                onClick={() =>
+                  setShowPopup(
+                    false
+                  )
+                }
+              >
+
+                Cancel
+
+              </button>
+
+
+
+              <button
+                className=
+                "create-popup-btn"
+
+                onClick={
+                  createAttribute
+                }
+              >
+
+                Create
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
     </>
   );
 }
