@@ -21,7 +21,7 @@ function CreateVariant() {
 
 
 
-  // BASIC FORM
+  
   const [form, setForm] = useState({
 
     sku: "",
@@ -516,7 +516,7 @@ function CreateVariant() {
                   }
                 >
 
-                  + Add Variant
+                  + Add Attribute
 
                 </button>
 

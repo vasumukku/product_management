@@ -1,0 +1,159 @@
+.attribute-main-container {
+  margin-left: 270px;
+  margin-top: 70px;
+  padding: 25px;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+
+.attribute-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.attribute-header h2 {
+  font-size: 30px;
+}
+
+.add-attribute-btn {
+  background: black;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.attribute-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.attribute-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.attribute-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.attribute-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+/* POPUP */
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-box {
+  width: 420px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.popup-box h3 {
+  margin-bottom: 20px;
+}
+
+.popup-box input {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 15px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.option-row {
+  display: flex;
+  gap: 10px;
+}
+
+.small-add-btn {
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.option-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  margin-top: 15px;
+}
+
+.option-tag {
+  background: #e5e7eb;
+  padding: 7px 12px;
+  border-radius: 20px;
+}
+
+.popup-actions {
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background: gray;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.create-popup-btn {
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}

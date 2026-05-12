@@ -36,35 +36,58 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    
     const admin = await User.findOne({ where: { email } });
 
+    
     if (!admin) {
-      return res.status(400).json({ message: "Invalid email" });
+      return res.status(400).json({
+        message: "Invalid email",
+      });
     }
 
+   
     const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({
+        message: "Invalid password",
+      });
     }
 
+    
+    if (admin.role !== "admin") {
+      return res.status(403).json({
+        message: "Access denied. Admin only",
+      });
+    }
+
+    
     const token = jwt.sign(
-      { id: admin.id, role: admin.role },
+      {
+        id: admin.id,
+        role: admin.role,
+      },
       "secret_key",
-      { expiresIn: "1d" }
+      {
+        expiresIn: "1d",
+      }
     );
 
+    // 6. Send response
     res.json({
       message: "Login successful",
       token,
       admin: {
         id: admin.id,
         email: admin.email,
-        role: admin.role
-      }
+        role: admin.role,
+      },
     });
 
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };

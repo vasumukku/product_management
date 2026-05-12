@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import Categories from "./pages/Categories";
 import CreateVariant from "./pages/CreateVariant";
 import ViewVariants from "./pages/ViewVariants"
+import AttributeManager from "./pages/AttributeManager";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/variants/:productId" element={<CreateVariant />} />
         <Route path="/view-variants/:productId" element={<ViewVariants />}/> 
 
+        <Route path="/AttributeManager" element={<AttributeManager />}/> 
 
       </Routes>
     </BrowserRouter>
